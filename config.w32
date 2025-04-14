@@ -1,0 +1,16 @@
+ARG_ENABLE("simdutf", "whether to enable simdutf support", "no");
+
+if (PHP_SIMDUTF == "yes") {
+  AC_DEFINE('HAVE_SIMDUTF', 1, 'Have simdutf support', false);
+
+  // NOTE: The linker requires that the files have different basenames, so simdutf.cpp was
+  // renamed to php_simdutf.cpp
+  EXTENSION('simdutf',
+    'php_simdutf.cpp',
+    'yes',
+    '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 /std:c++latest');
+  ADD_SOURCES(configure_module_dirname + '/src', 'simdsimdutf.cpp simdsimdutf_bindings.cpp', 'simdutf');
+  ADD_FLAG('CFLAGS_SIMDUTF', '/I' + configure_module_dirname);
+  PHP_INSTALL_HEADERS('ext/simdutf', 'php_simdutf.h src/simdutf_bindings_defs.h');
+}
+// vim:ft=javascript

@@ -1,0 +1,88 @@
+name: Tests
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  Ubuntu:
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+          - "8.4"
+        os: [ubuntu-latest]
+        experimental: [false]
+    runs-on: ${{ matrix.os }}
+    name: Ubuntu (${{ matrix.php-version }})
+    continue-on-error: ${{ matrix.experimental }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401 # v2.32.0
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: mbstring
+          # for correct php-config extension dir, see https://github.com/shivammathur/setup-php/issues/147
+          tools: pecl, phpize, php-config
+
+      - name: "Build extension"
+        # use 'php run-tests.php' instead of 'make test' to ensure all extensions are loaded from conf.d
+        run: |
+          export NO_INTERACTION=true
+          export REPORT_EXIT_STATUS=1
+          phpize
+          ./configure
+          make -j$(nproc)
+          sudo make install 
+          echo "extension=simdutf.so" | sudo tee /etc/php/${{ matrix.php-version }}/cli/conf.d/20-simdutf.ini
+          php run-tests.php || exit 1
+
+      - name: "Show"
+        run: "php -dextension=simdutf.so --ri simdutf"
+
+      - name: "Error log"
+        if: ${{ failure() }}
+        run: "ls -1t tests/*.log | xargs -d'\n' cat"
+
+      - name: "Error diff"
+        if: ${{ failure() }}
+        run: |
+          for FILE in $(find tests -name '*.diff'); do
+            echo $FILE
+            cat $FILE
+            echo
+          done
+
+  macOS:
+    runs-on: macos-latest
+    continue-on-error: false
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3', '8.4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401 # v2.32.0
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+
+      - name: Build simdutf
+        run: |
+          phpize
+          ./configure
+          make -j$(nproc)
+
+      - name: Run tests
+        # 'make test' is ok on macOS since there's no conf.d directory to scan for INIs
+        run: |
+          export NO_INTERACTION=true
+          export REPORT_EXIT_STATUS=1
+          make test TESTS="--show-diff -j2"

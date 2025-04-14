@@ -1,0 +1,46 @@
+#ifndef PHP_SIMDUTF_CONVERT_UTF16_H
+#define PHP_SIMDUTF_CONVERT_UTF16_H
+
+#include "../php_simdutf.h"
+
+BEGIN_EXTERN_C()
+
+PHP_FUNCTION(SimdUtf_convert_utf16_to_utf8);
+PHP_FUNCTION(SimdUtf_convert_utf16_to_latin1);
+PHP_FUNCTION(SimdUtf_convert_utf16_to_utf32);
+
+PHP_FUNCTION(SimdUtf_convert_utf16le_to_utf8);
+PHP_FUNCTION(SimdUtf_convert_utf16le_to_utf32);
+PHP_FUNCTION(SimdUtf_convert_utf16le_to_latin1);
+
+PHP_FUNCTION(SimdUtf_convert_utf16be_to_utf8);
+PHP_FUNCTION(SimdUtf_convert_utf16be_to_utf32);
+PHP_FUNCTION(SimdUtf_convert_utf16be_to_latin1);
+
+PHP_FUNCTION(SimdUtf_convert_utf16_to_utf8_with_errors);
+PHP_FUNCTION(SimdUtf_convert_utf16_to_utf32_with_errors);
+PHP_FUNCTION(SimdUtf_convert_utf16_to_latin1_with_errors);
+
+PHP_FUNCTION(SimdUtf_convert_utf16le_to_utf8_with_errors);
+PHP_FUNCTION(SimdUtf_convert_utf16le_to_latin1_with_errors);
+PHP_FUNCTION(SimdUtf_convert_utf16le_to_utf32_with_errors);
+
+PHP_FUNCTION(SimdUtf_convert_utf16be_to_utf8_with_errors);
+PHP_FUNCTION(SimdUtf_convert_utf16be_to_utf32_with_errors);
+PHP_FUNCTION(SimdUtf_convert_utf16be_to_latin1_with_errors);
+
+PHP_FUNCTION(SimdUtf_convert_valid_utf16_to_utf8);
+PHP_FUNCTION(SimdUtf_convert_valid_utf16_to_latin1);
+PHP_FUNCTION(SimdUtf_convert_valid_utf16_to_utf32);
+
+PHP_FUNCTION(SimdUtf_convert_valid_utf16le_to_utf8);
+PHP_FUNCTION(SimdUtf_convert_valid_utf16le_to_utf32);
+PHP_FUNCTION(SimdUtf_convert_valid_utf16le_to_latin1);
+
+PHP_FUNCTION(SimdUtf_convert_valid_utf16be_to_utf8);
+PHP_FUNCTION(SimdUtf_convert_valid_utf16be_to_utf32);
+PHP_FUNCTION(SimdUtf_convert_valid_utf16be_to_latin1);
+
+END_EXTERN_C()
+
+#endif
