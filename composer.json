@@ -1,8 +1,8 @@
 {
   "name": "awesome/simdutf",
-  "description": "Unicode routines (UTF8, UTF16, UTF32) and Base64 for PHP: billions of characters per second using SIMD - SSE2, AVX2, NEON, AVX-512, RISC-V Vector Extension, LoongArch64, POWER.",
+  "description": "Unicode (UTF8, UTF16, UTF32) and Base64 processing at billions of characters per second in PHP using the simdutf library.",
   "type": "php-ext",
-  "keywords": ["utf8", "utf16", "utf32", "base64", "simd"],
+  "keywords": ["utf8", "utf16", "utf32", "base64", "unicode", "simd"],
   "homepage": "https://github.com/awesomized/simdutf-php-ext",
   "license": [
     "Apache-2.0",
